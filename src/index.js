@@ -40,6 +40,7 @@ app.post("/", (req, res) => {
 mongodb.MongoClient.connect("<mongodb_uri>", (err, database) => {
 	if (err) return console.error(err)
 	db = database;
-	app.listen(8080);
-	console.log("listening on port 8080");
+	let port = process.env.PORT || 8080;
+	app.listen(port);
+	console.log("listening on port " + port);
 })
