@@ -9,6 +9,22 @@ The thought experiment here was to have the server do as little as possible and 
 - The only static files the server serves up are the HTML files which have JS and CSS embedded in them. This is to keep requests low.
 - The server uses the mongodb _id field provided to it for routes instead of wasting cycles generating one. (Security issue?)
 
+### Getting up and running
+Install dependencies
+```
+npm i
+```
+
+Update your mongodb URI
+```
+mongodb.MongoClient.connect("<mongodb_uri>", (err, database) => {
+```
+
+Start the server
+```
+npm start
+```
+
 ### Roadmap
 - [ ] Add a merkel-tree implementation so that anonymous posters can verify a chain or tree of posts were all created by the same user (if that user so wishes.)
 - [ ] Some better styling
