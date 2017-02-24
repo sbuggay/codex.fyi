@@ -1,10 +1,36 @@
 <html>
+
+<head>
+	<style>
+		#wrap {
+			width: 50%;
+			margin: 16px auto;
+		}
+	</style>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.4.1/github-markdown.min.css" rel="stylesheet" />
+</head>
+
 <body>
-<h1>
-    post
-</h1>
-<script>
-    console.log("test");
-</script>
+	<div id="wrap">
+		<div id="markdown" class="markdown-body">
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.3/showdown.min.js"></script>
+	<script>
+		const converter = new showdown.Converter();
+		const req = new XMLHttpRequest();
+		req.open('GET', window.location.pathname + ".json");
+		req.setRequestHeader("Content-Type", "application/json");
+		req.onreadystatechange = function () {
+			if (this.readyState === 4) {
+				req.onreadystatechange = null;
+				if (this.status === 200) {
+					document.getElementById("markdown").innerHTML = converter.makeHtml(JSON.parse(req.response).body);
+				}
+			}
+		};
+		req.send();
+	</script>
 </body>
+
 </html>
