@@ -6,7 +6,6 @@ let ObjectId = mongodb.ObjectId;
 let db;
 
 app.use(bodyParser.json());
-app.use(express.static("public"));
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/public/index.html");
@@ -19,8 +18,6 @@ app.get("/about", (req, res) => {
 app.get("/:id.json", (req, res) => {
 	db.collection('posts').findOne(ObjectId(req.params.id) , (err, result) => {
 		if (err) return res.send({ status: "error", error: err });
-		console.log(req.params.id);
-		console.log(result);
 		res.send(result);
 	})
 });
