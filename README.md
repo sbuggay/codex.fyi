@@ -15,8 +15,8 @@ Install dependencies
 npm i
 ```
 
-Update your mongodb URI
-```
+Update your mongodb URI in index.js
+```js
 mongodb.MongoClient.connect("<mongodb_uri>", (err, database) => {
 ```
 
