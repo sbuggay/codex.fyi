@@ -2,8 +2,9 @@ let express = require("express");
 let app = express();
 let bodyParser = require("body-parser");
 let mongodb = require('mongodb');
-let ObjectId = mongodb.ObjectId;
 let db;
+
+const config = require("./config.json");
 
 app.use(bodyParser.json());
 
@@ -16,8 +17,12 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/:id.json", (req, res) => {
-	db.collection('posts').findOne(ObjectId(req.params.id) , (err, result) => {
-		if (err) return res.send({ status: "error", error: err });
+	db.collection("posts").findOne(mongodb.ObjectId(req.params.id), (err, result) => {
+		if (err) return res.send({
+			status: "error",
+			error: err
+		});
+		console.log(result);
 		res.send(result);
 	})
 });
@@ -27,17 +32,24 @@ app.get("/:id", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-	console.log(req.body);
-	db.collection('posts').save(req.body, (err, result) => {
-		if (err) return res.send({ status: "error", error: err });
-		res.send({ status: "success", id: result.ops[0]["_id"] });
+	db.collection("posts").save({
+		text: req.body.text
+	}, (err, result) => {
+		if (err) return res.send({
+			status: "error",
+			error: err
+		});
+		res.send({
+			status: "success",
+			id: result.ops[0]["_id"]
+		});
 	})
 });
 
-mongodb.MongoClient.connect("<mongodb_uri>", (err, database) => {
+mongodb.MongoClient.connect(config.mongodb_uri, (err, database) => {
 	if (err) return console.error(err)
 	db = database;
-	let port = process.env.PORT || 8080;
+	let port = process.env.PORT || config.port;
 	app.listen(port);
 	console.log("listening on port " + port);
 })

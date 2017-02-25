@@ -2,23 +2,27 @@
 
 <head>
 	<style>
+		* {
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		}
+		
 		#wrap {
 			width: 50%;
 			margin: 16px auto;
 		}
-
-		#hash {
+		
+		.input {
 			width: 100%;
+			margin-top: 16px;
 		}
 		
 		#textarea {
 			width: 100%;
 			height: 600px;
-			margin-top: 16px;
+			font-size: 1em;
 		}
 		
 		#submit {
-			margin-top: 16px;
 			float: right;
 		}
 	</style>
@@ -26,14 +30,23 @@
 
 <body>
 	<div id="wrap">
+		<h1 style="text-align: center;">codex.fyi</h1>
 		<div>
-		<input placeholder="parent_hash" id="hash"></input>
-		<textarea id="textarea"></textarea>
+			<textarea id="textarea"></textarea>
+			<input placeholder="current hash" id="currentHash" class="input"></input>
+			<input placeholder="parent hash (optional)" id="parentHash" class="input"></input>
 		</div>
-		<button id="submit">submit</button>
+		<div style="margin-top: 16px;">
+			<button id="submit">submit</button>
+		</div>
 	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.6/sjcl.min.js"></script>
 	<script>
 		var submit = document.getElementById("submit");
+		var textarea = document.getElementById("textarea");
+		var currentHash = document.getElementById("currentHash");
+		var parentHash = document.getElementById("parentHash");
+
 		submit.addEventListener("click", function () {
 			const req = new XMLHttpRequest();
 			req.open('POST', "/");
@@ -48,9 +61,29 @@
 				}
 			};
 			req.send(JSON.stringify({
-				body: document.getElementById("textarea").value
+				text: textarea.value
 			}));
 		});
+
+		textarea.addEventListener("change", function () {
+			console.log(createHexString(sjcl.hash.sha256.hash(textarea.value)));
+		});
+
+		function createHexString(arr) {
+			var result = "";
+			var z;
+
+			for (var i = 0; i < arr.length; i++) {
+				var str = arr[i].toString(16);
+
+				z = 8 - str.length + 1;
+				str = Array(z).join("0") + str;
+
+				result += str;
+			}
+
+			return result;
+		}
 	</script>
 </body>
 

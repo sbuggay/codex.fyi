@@ -2,17 +2,21 @@
 
 <head>
 	<style>
+		* {
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		}
+
 		#wrap {
 			width: 50%;
 			margin: 16px auto;
 		}
 	</style>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.4.1/github-markdown.min.css" rel="stylesheet" />
 </head>
 
 <body>
 	<div id="wrap">
-		<div id="markdown" class="markdown-body">
+		<h1 style="text-align: center;">codex.fyi</h1>
+		<div id="markdown">
 		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.3/showdown.min.js"></script>
@@ -25,7 +29,7 @@
 			if (this.readyState === 4) {
 				req.onreadystatechange = null;
 				if (this.status === 200) {
-					document.getElementById("markdown").innerHTML = converter.makeHtml(JSON.parse(req.response).body);
+					document.getElementById("markdown").innerHTML = converter.makeHtml(JSON.parse(req.response).text);
 				}
 			}
 		};
