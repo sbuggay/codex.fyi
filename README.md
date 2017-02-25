@@ -2,12 +2,14 @@
 
 Simple anonymous page generator that supports markdown.
 
-Uses [ShowdownJS](https://github.com/showdownjs) for markdown generation and [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) for syling.
+Uses [ShowdownJS](https://github.com/showdownjs) for markdown generation.
 
-The thought experiment here was to have the server do as little as possible and make the client do as much work as it can.
-- The client is generating the markdown.
+This is a thought experiment to try and have the server do as little as possible and offload almost everything to the client.
 - The only static files the server serves up are the HTML files which have JS and CSS embedded in them. This is to keep requests low.
-- The server uses the mongodb _id field provided to it for routes instead of wasting cycles generating one. (Security issue?)
+- The server uses the mongodb _id field provided to it for routes instead of wasting cycles generating one.
+- Markdown generation is done client-side.
+- Hash generation is done client-side.
+- Parent verification is done client-side.
 
 ### Getting up and running
 Install dependencies
@@ -15,10 +17,7 @@ Install dependencies
 npm i
 ```
 
-Update your mongodb URI in index.js
-```js
-mongodb.MongoClient.connect("<mongodb_uri>", (err, database) => {
-```
+Update your mongodb URI in src/config.json
 
 Start the server
 ```
